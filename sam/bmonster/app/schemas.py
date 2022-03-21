@@ -1,12 +1,17 @@
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+
+class ScheduleRequest(BaseModel):
+    performer: Optional[str] = None
+    vol: Optional[str] = None
 
 
 class ScheduleResponse(BaseModel):
     performer: str
     vol: str
-    schedule_list: List[dict]
+    scheduleList: List[dict] = Field(..., alias="schedule_list")
 
     class Config:
         orm_mode = True

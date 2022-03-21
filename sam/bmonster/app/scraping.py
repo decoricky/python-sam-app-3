@@ -109,9 +109,9 @@ def main() -> List[dict]:
     for item in item_list:
         key = ProgramKey(performer=item.performer, vol=item.vol)
         if not schedule_dict.get(key):
-            schedule_dict[key] = [{"studio": item.studio, "start_datetime": item.start_datetime.isoformat()}]
+            schedule_dict[key] = [{"studio": item.studio, "startDatetime": item.start_datetime.isoformat()}]
         else:
-            schedule_dict[key].append({"studio": item.studio, "start_datetime": item.start_datetime.isoformat()})
+            schedule_dict[key].append({"studio": item.studio, "startDatetime": item.start_datetime.isoformat()})
     schedule_list: List[Schedule] = [
         Schedule(performer=key.performer, vol=key.vol, schedule_list=value) for key, value in schedule_dict.items()
     ]

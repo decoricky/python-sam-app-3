@@ -29,6 +29,20 @@ Resources:
             Schedule: "cron(1 0 * * *)"
             Input: { }
 
+  ScheduleApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sam/bmonster/
+      Handler: app.schedule.lambda_handler
+      Layers:
+        - !Ref PackageLayer
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /schedule
+            Method: get
+
   PackageLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
