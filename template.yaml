@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  python-sam-app-2
+
+  Sample SAM Template for python-sam-app-2
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: python3.9
+    Architectures:
+      - x86_64
+
+Resources:
+  ScrapingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sam/bmonster/
+      Handler: app.scraping.lambda_handler
+      Timeout: 300
+      Layers:
+        - !Ref PackageLayer
+      Events:
+        Schedule:
+          Type: Schedule
+          Properties:
+            Schedule: "cron(1 0 * * *)"
+            Input: { }
+
+  PackageLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: 'sam/packages'
+      CompatibleRuntimes:
+        - python3.9
+      RetentionPolicy: Delete
+    Metadata:
+      BuildMethod: python3.9

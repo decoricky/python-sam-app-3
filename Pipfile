@@ -4,9 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+requests = "*"
+bs4 = "*"
+pynamodb = "*"
+pydantic = "*"
 
 [dev-packages]
 aws-sam-cli = "*"
+isort = "*"
 
 [requires]
 python_version = "3.9"
