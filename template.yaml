@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: sam/bmonster/
-      Handler: app.scraping.lambda_handler
+      Handler: app.functions.scraping.lambda_handler
       Timeout: 300
       Layers:
         - !Ref PackageLayer
@@ -33,7 +33,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: sam/bmonster/
-      Handler: app.schedule.lambda_handler
+      Handler: app.functions.schedule.lambda_handler
       Layers:
         - !Ref PackageLayer
       Events:

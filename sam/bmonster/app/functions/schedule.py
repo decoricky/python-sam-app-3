@@ -4,8 +4,8 @@ import urllib.parse
 from datetime import timedelta, timezone
 from typing import List
 
-from .models import Schedule
-from .schemas import ScheduleRequest, ScheduleResponse
+from ..models import Schedule
+from ..schemas import ScheduleRequest, ScheduleResponse
 
 JST = timezone(timedelta(hours=9))
 

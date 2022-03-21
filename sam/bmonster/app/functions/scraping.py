@@ -8,9 +8,9 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 
-from .constants import StudioList
-from .models import Performer, Program, Schedule, dynamodb_migrate
-from .schemas import ScheduleResponse
+from ..constants import StudioList
+from ..models import Performer, Program, Schedule, dynamodb_migrate
+from ..schemas import ScheduleResponse
 
 JST = timezone(timedelta(hours=9))
 BASE_URL = "https://www.b-monster.jp"
