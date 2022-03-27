@@ -8,12 +8,22 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 29
     Runtime: python3.9
     Architectures:
       - x86_64
 
 Resources:
+  PackageLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: 'sam/packages'
+      CompatibleRuntimes:
+        - python3.9
+      RetentionPolicy: Delete
+    Metadata:
+      BuildMethod: python3.9
+
   ScrapingFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -29,6 +39,12 @@ Resources:
             Schedule: "cron(1 0 * * *)"
             Input: { }
 
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Local
+      Cors: "'*'"
+
   ScheduleApiFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -42,13 +58,5 @@ Resources:
           Properties:
             Path: /schedule
             Method: get
-
-  PackageLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      ContentUri: 'sam/packages'
-      CompatibleRuntimes:
-        - python3.9
-      RetentionPolicy: Delete
-    Metadata:
-      BuildMethod: python3.9
+            RestApiId:
+              Ref: ApiGatewayApi
