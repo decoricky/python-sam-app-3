@@ -3,7 +3,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
-class ScheduleRequest(BaseModel):
+class ProgramRequest(BaseModel):
     performer: Optional[str] = None
     vol: Optional[str] = None
 

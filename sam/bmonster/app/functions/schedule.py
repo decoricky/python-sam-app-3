@@ -5,7 +5,7 @@ from datetime import timedelta, timezone
 from typing import List
 
 from ..models import Schedule
-from ..schemas import ScheduleRequest, ScheduleResponse
+from ..schemas import ProgramRequest, ScheduleResponse
 
 JST = timezone(timedelta(hours=9))
 
@@ -21,15 +21,15 @@ def lambda_handler(event, context):
     if http_method == 'GET':
         if not query_params:
             query_params = {}
-        response = get(ScheduleRequest(**query_params))
+        response = get(ProgramRequest(**query_params))
 
     elif http_method == 'POST' and headers.get('Content-Type') == 'application/json':
         body = json.loads(body)
-        response = post(ScheduleRequest(**body))
+        response = post(ProgramRequest(**body))
 
     elif http_method == 'POST' and headers.get('Content-Type') == 'application/x-www-form-urlencoded':
         body = urllib.parse.parse_qs(body)
-        response = post(ScheduleRequest(**body))
+        response = post(ProgramRequest(**body))
 
     else:
         response = {}
@@ -40,16 +40,16 @@ def lambda_handler(event, context):
     }
 
 
-def get(req: ScheduleRequest) -> List[dict]:
-    if req.performer and not req.vol:
+def get(req: ProgramRequest) -> List[dict]:
+    if req.performer and req.vol:
+        schedule_list = [Schedule.get(req.performer, req.vol)]
+    elif req.performer:
         schedule_list = Schedule.query(req.performer)
-    elif req.performer and req.vol:
-        schedule_list = Schedule.query(req.performer, Schedule.vol == req.vol)
     else:
         schedule_list = Schedule.scan()
 
     return [ScheduleResponse.from_orm(schedule).dict() for schedule in schedule_list]
 
 
-def post(req: ScheduleRequest) -> dict:
+def post(req: ProgramRequest) -> dict:
     return {}
