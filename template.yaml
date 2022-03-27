@@ -60,3 +60,26 @@ Resources:
             Method: get
             RestApiId:
               Ref: ApiGatewayApi
+
+  ProgramReviewApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sam/bmonster/
+      Handler: app.functions.program_review.lambda_handler
+      Layers:
+        - !Ref PackageLayer
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /programReview
+            Method: get
+            RestApiId:
+              Ref: ApiGatewayApi
+        POST:
+          Type: Api
+          Properties:
+            Path: /programReview
+            Method: post
+            RestApiId:
+              Ref: ApiGatewayApi

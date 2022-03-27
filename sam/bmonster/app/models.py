@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from pynamodb.attributes import ListAttribute, TTLAttribute, UnicodeAttribute
+from pynamodb.attributes import ListAttribute, TTLAttribute, UnicodeAttribute, NumberAttribute
 from pynamodb.models import Model
 
 JST = timezone(timedelta(hours=9))
@@ -44,6 +44,15 @@ class Schedule(Model):
     ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=1))
 
 
+class ProgramReview(Model):
+    class Meta(BaseMeta):
+        table_name = 'program_review'
+
+    performer = UnicodeAttribute(hash_key=True)
+    vol = UnicodeAttribute(range_key=True)
+    star = NumberAttribute()
+
+
 def dynamodb_migrate():
     if not Performer.exists():
         Performer.create_table()
@@ -53,3 +62,6 @@ def dynamodb_migrate():
 
     if not Schedule.exists():
         Schedule.create_table()
+
+    if not ProgramReview.exists():
+        ProgramReview.create_table()

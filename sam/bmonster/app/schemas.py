@@ -15,3 +15,18 @@ class ScheduleResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class ProgramReviewCreateUpdateRequest(BaseModel):
+    performer: str
+    vol: str
+    star: int
+
+
+class ProgramReviewResponse(BaseModel):
+    performer: str
+    vol: str
+    star: int
+
+    class Config:
+        orm_mode = True
