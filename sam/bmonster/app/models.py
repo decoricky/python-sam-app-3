@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 
 from pynamodb.attributes import ListAttribute, TTLAttribute, UnicodeAttribute, NumberAttribute
@@ -7,10 +8,8 @@ JST = timezone(timedelta(hours=9))
 
 
 class BaseMeta:
-    region = 'ap-northeast-1'
-    host = "http://dynamodb:8000"
-    aws_access_key_id = 'access_key_id'
-    aws_secret_access_key = 'secret_access_key'
+    region = os.getenv('REGION')
+    host = os.getenv('DYNAMODB_HOST')
     billing_mode = 'PAY_PER_REQUEST'
 
 
