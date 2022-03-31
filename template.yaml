@@ -8,24 +8,24 @@ Description: >
 Parameters:
   Env:
     Type: String
-    Default: local
+    Default: Local
     AllowedValues:
-      - local
-      - dev
-      - staging
-      - prod
+      - Local
+      - Dev
+      - Staging
+      - Prod
 
 Mappings:
-  local:
+  Local:
     Aws:
       Region: ap-northeast-1
       DynamoDBHost: http://dynamodb:8000
-      BillingMode: PAY_PER_REQUEST
-  dev:
+      DynamoDBBillingMode: PAY_PER_REQUEST
+  Dev:
     Aws:
       Region: ap-northeast-1
       DynamoDBHost: ""
-      BillingMode: PAY_PER_REQUEST
+      DynamoDBBillingMode: PAY_PER_REQUEST
 
 Globals:
   Function:
@@ -38,7 +38,7 @@ Globals:
         ENV: !Ref Env
         REGION: !FindInMap [!Ref Env, Aws, Region]
         DYNAMODB_HOST: !FindInMap [!Ref Env, Aws, DynamoDBHost]
-        BILLING_MODE: !FindInMap [!Ref Env, Aws, BillingMode]
+        BILLING_MODE: !FindInMap [!Ref Env, Aws, DynamoDBBillingMode]
 
 Resources:
   PackageLayer:
@@ -57,6 +57,8 @@ Resources:
       CodeUri: sam/bmonster/
       Handler: app.functions.scraping.lambda_handler
       Timeout: 300
+      Policies:
+        - AmazonDynamoDBFullAccess
       Layers:
         - !Ref PackageLayer
       Events:
@@ -76,6 +78,8 @@ Resources:
     Properties:
       CodeUri: sam/bmonster/
       Handler: app.functions.schedule.lambda_handler
+      Policies:
+        - AmazonDynamoDBFullAccess
       Layers:
         - !Ref PackageLayer
       Events:
@@ -92,6 +96,8 @@ Resources:
     Properties:
       CodeUri: sam/bmonster/
       Handler: app.functions.program_review.lambda_handler
+      Policies:
+        - AmazonDynamoDBFullAccess
       Layers:
         - !Ref PackageLayer
       Events:
