@@ -9,8 +9,8 @@ JST = timezone(timedelta(hours=9))
 
 class BaseMeta:
     region = os.getenv('REGION')
-    host = os.getenv('DYNAMODB_HOST')
-    billing_mode = 'PAY_PER_REQUEST'
+    host = os.getenv('DYNAMODB_HOST') or None
+    billing_mode = os.getenv('BILLING_MODE')
 
 
 class Performer(Model):
@@ -18,7 +18,7 @@ class Performer(Model):
         table_name = 'performer'
 
     name = UnicodeAttribute(hash_key=True)
-    ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=31))
+    # ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=31))
 
     def __str__(self):
         return self.name
@@ -30,7 +30,7 @@ class Program(Model):
 
     performer = UnicodeAttribute(hash_key=True)
     vol = UnicodeAttribute(range_key=True)
-    ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=31))
+    # ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=31))
 
 
 class Schedule(Model):
@@ -40,7 +40,7 @@ class Schedule(Model):
     performer = UnicodeAttribute(hash_key=True)
     vol = UnicodeAttribute(range_key=True)
     schedule_list = ListAttribute()
-    ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=1))
+    # ttl = TTLAttribute(default=datetime.now(JST) + timedelta(days=1))
 
 
 class ProgramReview(Model):

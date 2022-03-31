@@ -17,9 +17,15 @@ Parameters:
 
 Mappings:
   local:
-      Aws:
-        Region: ap-northeast-1
-        DynamoDBHost: http://dynamodb:8000
+    Aws:
+      Region: ap-northeast-1
+      DynamoDBHost: http://dynamodb:8000
+      BillingMode: PAY_PER_REQUEST
+  dev:
+    Aws:
+      Region: ap-northeast-1
+      DynamoDBHost: ""
+      BillingMode: PAY_PER_REQUEST
 
 Globals:
   Function:
@@ -30,8 +36,9 @@ Globals:
     Environment:
       Variables:
         ENV: !Ref Env
-        REGION: !FindInMap [!Ref Env, AWS, Region]
+        REGION: !FindInMap [!Ref Env, Aws, Region]
         DYNAMODB_HOST: !FindInMap [!Ref Env, Aws, DynamoDBHost]
+        BILLING_MODE: !FindInMap [!Ref Env, Aws, BillingMode]
 
 Resources:
   PackageLayer:
@@ -56,8 +63,7 @@ Resources:
         Schedule:
           Type: Schedule
           Properties:
-            Schedule: "cron(1 0 * * *)"
-            Input: { }
+            Schedule: "cron(1 15 * * ? *)"
 
   ApiGatewayApi:
     Type: AWS::Serverless::Api

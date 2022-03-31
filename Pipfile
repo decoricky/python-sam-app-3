@@ -10,7 +10,6 @@ pynamodb = "*"
 pydantic = "*"
 
 [dev-packages]
-aws-sam-cli = "*"
 isort = "*"
 
 [requires]
