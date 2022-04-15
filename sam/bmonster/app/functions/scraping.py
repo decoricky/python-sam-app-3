@@ -37,7 +37,9 @@ class ScrapingItem:
 
 def scraping(studio_code: str,
              studio_name: str,
-             now: datetime = datetime.now(JST)) -> List[ScrapingItem]:
+             now: datetime = None) -> List[ScrapingItem]:
+    if now is None:
+        now = datetime.now(JST)
     item_list: List[ScrapingItem] = []
 
     # HTML取得
